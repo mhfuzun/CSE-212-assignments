@@ -16,46 +16,36 @@ public class Inventory {
         itemCount = 0;
     }
 
-    public int addItem(String itemName, double itemPrice, int itemQuantity) {
-        if (itemCount >= 5) {
+    public boolean addItem(String itemName, double itemPrice, int itemQuantity) {
+        if (itemCount >= maxItemCount) {
             System.out.println("Inventory is full.");
-            return 0;
+            return false;
         }
 
         this.itemName[itemCount] = itemName;
         this.itemPrice[itemCount] = itemPrice;
         this.itemQuantity[itemCount] = itemQuantity;
         
-        ++itemCount;
+        itemCount++;
 
-        return itemCount;
+        return true;
     }
 
-    public int displayAllItems() {
-        System.out.println("+------+---------+------------+---------+");
-
+    public void displayAllItems() {
+        System.out.println("Inventory Items:");
         for (int i = 0; i < itemCount; i++) {
-            System.out.printf("| %-4d | %-7s | %-8.5f $ | %-7d |\n",
-                i,
-                itemName[i], 
-                itemPrice[i], 
-                itemQuantity[i]
-            );
-            
-            System.out.println("+------+---------+------------+---------+");
+            System.out.println("Item " + (i + 1) + ": " + itemName[i] + ", Price: $" + itemPrice[i] + ", Quantity: " + itemQuantity[i]);
         }
-
-        return itemCount;
     }
 
     public int getTotalNumberOfItems() {
         return itemCount;
     }
 
-    public int calculateTotalWorth() {
-        int sum=0;
+    public double calculateTotalWorth() {
+        double sum = 0.0;
 
-        for (int i=0; i<itemCount; i++) {
+        for (int i = 0; i < itemCount; i++) {
             sum += itemQuantity[i] * itemPrice[i];
         }
 
