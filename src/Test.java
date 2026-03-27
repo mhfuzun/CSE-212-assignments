@@ -3,19 +3,29 @@
 
 import java.util.Scanner;
 
-public class InventoryTest {
+public class Test {
     public static Scanner myScanner;
+    public static int orderID = 0;
+
+    public static void ShowMenu() {
+        System.out.println(SubMenu.INVENTORY.getMenuline());
+        System.out.println(Menu.NewItem.getMenuline());
+        System.out.println(Menu.DispItems.getMenuline());
+        System.out.println(Menu.NumOfItems.getMenuline());
+        System.out.println(Menu.WorthOfInv.getMenuline());
+        System.out.println(SubMenu.CUSTOMER.getMenuline());
+        System.out.println(Menu.OrderNew.getMenuline());
+        System.out.println(Menu.OrderCost.getMenuline());
+        System.out.println(Menu.Exit.getMenuline());
+    }
 
     public static void main(String[] args) {
         Inventory myInventory = new Inventory();
         myScanner = new Scanner(System.in);
+        Order myOrder = new Order(0, myInventory, "", 0);
         
         while (true) {
-            System.out.println("1. Add a new item");
-            System.out.println("2. Display all items");
-            System.out.println("3. Display total number of items");
-            System.out.println("4. Calculate total worth");
-            System.out.println("0. Exit");
+            ShowMenu();
 
             System.out.print("Enter your choice: ");
             
@@ -28,8 +38,8 @@ public class InventoryTest {
             int sel = myScanner.nextInt();
             myScanner.nextLine();
 
-            if (sel == 0) {
-                // 0. Exit
+            if (sel == 7) {
+                // 7. Exit
                 System.out.println("Exiting... Goodbye!");
                 break;
             } else if (sel == 1) {
@@ -65,9 +75,36 @@ public class InventoryTest {
             } else if (sel == 4) {
                 // 4. Calculate the Total Worth of the Inventory
                 System.out.println("Total Worth of Inventory: $" + myInventory.calculateTotalWorth());
+            } else if (sel == 5) {
+                // 5. Add an order
+                System.out.print("Enter the item name you want to order: ");
+                String itemName = myScanner.nextLine();
+                System.out.print("Enter the quantity: ");
+                int quantity = myScanner.nextInt();
+                myScanner.nextLine();
+
+                Order newOrder = new Order(orderID, myInventory, itemName, quantity);
+                if (newOrder.checkStorage(itemName)) {
+                    newOrder.displayOrderInfo();
+                    myOrder = newOrder;
+                    orderID++;
+                }
+            } else if (sel == 6) {
+                // 6. Calculate order cost
+                if (orderID != 0) {
+                    System.out.printf("Order cost for %d %s is: %f\n", 
+                        myOrder.getQuantity(), 
+                        myOrder.getItemName(), 
+                        myOrder.calculateOrderCost()
+                    );
+                } else {
+                    System.out.println("No order placed yet.");
+                }
             } else {
-                System.out.println("Please enter a valid choice between 0 and 4.");
+                System.out.println("Please enter a valid choice between 1 and 7.");
             }
+
+            System.err.println("");
         }
         
         myScanner.close();

@@ -51,4 +51,32 @@ public class Inventory {
 
         return sum;
     }
+
+    private int findItemIDXWithItemName(String itemName) {
+        for (int i=0; i<itemCount; i++) {
+            if (this.itemName[i].equals(itemName)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public int getItemCountWithItemName(String itemName) {
+        int itemIDX = findItemIDXWithItemName(itemName);
+        if (itemIDX != -1) {
+            return itemQuantity[itemIDX];
+        }
+
+        return -1;
+    }
+
+    public double getItemPriceWithItemName(String itemName) {
+        int itemIDX = findItemIDXWithItemName(itemName);
+        if (itemIDX != -1) {
+            return itemPrice[itemIDX];
+        }
+
+        return 0;
+    }
 }
