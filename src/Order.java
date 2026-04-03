@@ -2,47 +2,36 @@
 // 25.03.2026
 
 public class Order {
-    private int orderID;
-    private Inventory inventory;
-    private String itemName;
+    private Item item;
     private int quantity;
 
-    public Order(int orderID, Inventory inventory, String itemName, int quantity) {
-        this.orderID = orderID;
-        this.inventory = inventory;
-        this.itemName = itemName;
+    public Order(Item item, int quantity) {
+        this.item = item;
         this.quantity = quantity;
     }
-    
-    public void displayOrderInfo() {
-        System.out.printf("Order ID: %d\n", orderID);
-        System.out.printf("Item Name: %s\n", itemName);
-        System.out.printf("Quantity: %d\n", quantity);
-    }
 
-    public boolean checkStorage(String itemName) {
-        if (inventory.getItemCountWithItemName(itemName) >= quantity) {
-            return true;
-        } else {
-            System.out.println("Item not found in inventory. Order cannot be placed.");
-            return false;
-        }
+    public void displayOrderInfo() {
+        System.out.printf("The total cost of %s order is: %.2f\n", item.getItemName(), calculateOrderCost());
     }
 
     public double calculateOrderCost() {
-        double total_price = (inventory.getItemPriceWithItemName(itemName) * quantity);
+        double total_price = (item.calculateShippingFee() + item.getItemPrice() * quantity);
         return total_price;
     }
 
-    public int getOrderID() {
-        return orderID;
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public String getItemName() {
-        return itemName;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
