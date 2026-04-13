@@ -13,6 +13,10 @@ public class Item {
         this.type = type;
     }
 
+    public void raisePriceWithRate(double raiseRate) {
+        itemPrice += itemPrice * raiseRate;
+    }
+    
     public String getProviderContactInfo() {
         return provider.getContactInfo();
     }

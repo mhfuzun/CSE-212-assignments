@@ -1,10 +1,10 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static Scanner myScanner;
-    public static ArrayList<Item> items = new ArrayList<>();
-    public static ArrayList<Order> orders = new ArrayList<>();
+    public static List<Item> items = new ArrayList<>();
+    public static List<Item> itemsAboveFee = new ArrayList<>();
+    public static List<Order> orders = new ArrayList<>();
 
     public static void ShowMenu() {
         System.out.println(SubMenu.INVENTORY.getMenuline());
@@ -12,6 +12,8 @@ public class Main {
         System.out.println(Menu.DispItems.getMenuline());
         System.out.println(Menu.NumOfItems.getMenuline());
         System.out.println(Menu.WorthOfInv.getMenuline());
+        System.out.println(Menu.PriceOfSpec.getMenuline());
+        System.out.println(Menu.ListFreeShip.getMenuline());
         System.out.println(SubMenu.CUSTOMER.getMenuline());
         System.out.println(Menu.OrderNew.getMenuline());
         System.out.println(Menu.OrderCost.getMenuline());
@@ -54,6 +56,23 @@ public class Main {
         return null;
     }
 
+    public static void displayAllItems() {
+        for (Item item : items) {
+            item.displayItem();
+            System.out.println("");
+        }
+    }
+
+    public static void printItemsAboveFee() {
+        for (Item item : itemsAboveFee) {
+            System.out.printf("Item: %s, Shipping Fee: %.2f\n",
+                item.getItemName(),
+                item.calculateShippingFee()
+            );
+            System.out.println(item.getItemName());
+        }
+    }
+
     public static void main(String[] args) {
         myScanner = new Scanner(System.in);
 
@@ -71,13 +90,14 @@ public class Main {
             int sel = myScanner.nextInt();
             myScanner.nextLine();
 
-            if (sel == 7) {
+            if (sel == Menu.Exit.getMenuIndex()) {
                 // 7. Exit
                 System.out.println("Exiting... Goodbye!");
                 break;
-            } else if (sel == 1) {
+            } else if (sel == Menu.NewItem.getMenuIndex()) {
                 // 1. Add a New Item
                 System.out.println("");
+                System.out.println("Item's Information:");
                 System.out.print("Enter item name: ");
                 String itemName = myScanner.nextLine();
                 double itemPrice = getDoubleFromUser("Enter item price: $");
@@ -134,25 +154,22 @@ public class Main {
 
                 newItem.displayAddedMessage(true);
                 items.add(newItem);
-            } else if (sel == 2) {
-                // 2. Display all Items
-                for (Item item : items) {
-                    item.displayItem();
-                    System.out.println("");
-                }
-            } else if (sel == 3) {
+            } else if (sel == Menu.DispItems.getMenuIndex()) {
+                // 2. Display All Items
+                displayAllItems();
+            } else if (sel == Menu.NumOfItems.getMenuIndex()) {
                 // 3. Display the Total Number of Items
                 System.out.println("Total number of items: " + items.size());
-            } else if (sel == 4) {
+            } else if (sel == Menu.WorthOfInv.getMenuIndex()) {
                 // 4. Calculate the Total Worth of the Inventory
-                double total=0;
+                // double total=0;
                 for (Item item : items) {
                     double cost = item.calculateTotalWorth();
                     System.out.printf("Total Worth of %s: $%.2f\n", item.getItemName(), cost);
-                    total += cost;
+                    // total += cost;
                 }
                 // System.out.println("Total Worth of Inventory: $" + total);
-            } else if (sel == 5) {
+            } else if (sel == Menu.OrderNew.getMenuIndex()) {
                 // 5. Add an order
                 System.out.print("Enter the item name you want to order: ");
                 String itemName = myScanner.nextLine();
@@ -170,9 +187,47 @@ public class Main {
                 orders.add(newOrder);
                 System.out.println("Order has been placed successfully.");
                 myItem.updateQuantity(quantity);
-            } else if (sel == 6) {
+            } else if (sel == Menu.OrderCost.getMenuIndex()) {
                 for (Order order : orders) {
                     order.displayOrderInfo();
+                }
+            } else if (sel == Menu.PriceOfSpec.getMenuIndex()) {
+                String itemType = getStringFromUser("Which type of items will be raised in price?: ");
+                int raiseRate = getIntFromUser("How much will the raise ratio(%) be?: ");
+
+                if (itemType.equals("Physical") || itemType.equals("Digital")) {
+                    System.out.println("Please enter a valid item type.");
+                    continue;
+                }
+                
+                ListIterator<Item> iterator = items.listIterator();
+                while (iterator.hasNext()) {
+                    Item item = iterator.next();
+                    if (item.getType().equals(itemType)) {
+                        item.raisePriceWithRate(raiseRate);
+                    }
+                }
+                System.out.printf("The raise ratio was applied to %s items.\n", itemType);
+                System.out.println("");
+                displayAllItems();
+            } else if (sel == Menu.ListFreeShip.getMenuIndex()) {
+                int limit = getIntFromUser("Enter a limit: ");
+
+                itemsAboveFee = new ArrayList<Item>();
+
+                ListIterator<Order> iterator = orders.listIterator();
+                while (iterator.hasNext()) {
+                    Order order = iterator.next();
+                    if (order.getItem().calculateShippingFee() > limit) {
+                        itemsAboveFee.add(order.getItem());
+                    }
+                }
+
+                if (itemsAboveFee.size() == 0)
+                    System.out.println("There is no item with a shipping fee over this limit.");
+                else {
+                    System.out.printf("Items with shipping fees over %d: \n", limit);
+                    printItemsAboveFee();
                 }
             } else {
                 System.out.println("Please enter a valid choice between 1 and 7.");

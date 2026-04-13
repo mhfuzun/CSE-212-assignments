@@ -7,11 +7,13 @@ public enum Menu {
     DispItems("Display all Items", SubMenu.INVENTORY, 2),
     NumOfItems("Display the Total Number of Items", SubMenu.INVENTORY, 3),
     WorthOfInv("Calculate the Total Worth of the Inventory", SubMenu.INVENTORY, 4),
+    PriceOfSpec("Increase Price of Specific Type", SubMenu.INVENTORY, 5),
+    ListFreeShip("List Items with Shipping Fee Above a Limit", SubMenu.INVENTORY, 6),
     
-    OrderNew("Add an order", SubMenu.CUSTOMER, 5),
-    OrderCost("Calculate order cost", SubMenu.CUSTOMER, 6),
+    OrderNew("Add an order", SubMenu.CUSTOMER, 7),
+    OrderCost("Calculate order cost", SubMenu.CUSTOMER, 8),
     
-    Exit("Exit", SubMenu.CUSTOMER, 7),
+    Exit("Exit", SubMenu.CUSTOMER, 9),
     ;
 
     private final String text;

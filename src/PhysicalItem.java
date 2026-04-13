@@ -31,14 +31,23 @@ public class PhysicalItem extends Item {
     }
 
     public double calculateShippingFee() {
+        /**
+         *  | Volumetric Weight (vW)        | Coefficient   |
+            | vW < 1                        |    0.10       |
+            | vW >= 1 and vW < 2            |    0.25       |
+            | vW >= 2 and vW < 5            |    0.35       |
+            | vW >= 5                       |    0.50       |
+         */
         double volumetricWeight = calculateVolumetricWeight();
         double rate = 0;
-        if (volumetricWeight > 3) {
+        if (volumetricWeight >= 5) {
             rate = 0.5;
-        } else if (volumetricWeight > 2) {
+        } else if (volumetricWeight >= 2) {
             rate = 0.35;
-        } else if (volumetricWeight > 1) {
+        } else if (volumetricWeight >= 1) {
             rate = 0.25;
+        } else {
+            rate = 0.1;
         }
 
         return getItemPrice() * volumetricWeight * rate;
