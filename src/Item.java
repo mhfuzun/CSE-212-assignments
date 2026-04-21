@@ -1,9 +1,13 @@
-public class Item {
+public abstract class Item implements Service {
     private String itemName;
     private double itemPrice;
     private int itemQuantity;
     private Provider provider;
     private String type;
+
+    private String destinationRegion;
+    private String destinationCity;
+    private String destinationPostCode;
 
     public Item(String itemName, double itemPrice, int itemQuantity, Provider provider, String type) {
         this.itemName = itemName;
@@ -13,6 +17,14 @@ public class Item {
         this.type = type;
     }
 
+    public String getDestinationRegion() { return destinationRegion; }
+    public String getDestinationCity() { return destinationCity; }
+    public String getDestinationPostCode() { return destinationPostCode; }
+
+    public void setDestinationRegion(String destinationRegion) { this.destinationRegion = destinationRegion; }
+    public void setDestinationCity(String destinationCity) { this.destinationCity = destinationCity; }
+    public void setDestinationPostCode(String destinationPostCode) { this.destinationPostCode = destinationPostCode; }
+
     public void raisePriceWithRate(double raiseRate) {
         itemPrice += itemPrice * raiseRate;
     }
@@ -21,20 +33,14 @@ public class Item {
         return provider.getContactInfo();
     }
 
-    public void updateQuantity (int purchasedQuantity) {
-        itemQuantity -= purchasedQuantity;
-    }
+    public abstract void updateQuantity (int purchasedQuantity);
 
-    public double calculateVolumetricWeight () {
-        return 0;
-    }
+    public abstract double calculateVolumetricWeight ();
+
+    public abstract double calculateTotalWorth();
 
     public double calculateShippingFee() {
         return 0;
-    }
-
-    public double calculateTotalWorth() {
-        return itemPrice * itemQuantity + calculateShippingFee();
     }
 
     public void displayItem() {

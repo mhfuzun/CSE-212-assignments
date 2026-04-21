@@ -1,5 +1,11 @@
 # Online Shop Inventory Management System 🛒
 
+### package
+```bash
+make clean STUDENT_NUMBER=0
+make all STUDENT_NUMBER=0
+```
+
 **Course:** CSE212: Software Development Methodologies  
 **University:** Yeditepe University  
 **Term:** Spring 2026  

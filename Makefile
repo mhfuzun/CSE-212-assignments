@@ -1,7 +1,7 @@
 # Makefile for CSE-212-assignments
 
 # Define the student number (replace with your actual student number)
-STUDENT_NUMBER = 20220701005
+STUDENT_NUMBER = 0
 
 # Define the source files
 SOURCES = $(wildcard src/*.java)

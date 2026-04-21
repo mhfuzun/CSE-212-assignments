@@ -19,15 +19,51 @@ public class PhysicalItem extends Item {
         this.height = height;
     }
 
+    public String getServiceType() {
+        return ServiceTypes.PHYSICALITEM.getText();
+    }
+
+    public void displayServiceInfo() {
+        /*
+            Item : iPhone
+            Price: $999.0
+            Quantity: 500
+            Provider: Amazon
+            Provider Contact: +90(850)3902153
+        */
+
+        System.out.println("Item: " + getItemName());
+        System.out.println("Price: $" + getItemPrice());
+        System.out.println("Quantity: " + getItemQuantity());
+        System.out.println("Provider: " + getProvider().getName());
+        System.out.println("Provider Contact: " + getProviderContactInfo());
+        System.out.printf("Width: %.2f, Length: %.2f, Height: %.2f\n", width, length, height);
+    }
+
+    public double calculateService() {
+        return calculateTotalWorth();
+    }
+
+    @Override
+    public void updateQuantity (int purchasedQuantity) {
+        setItemQuantity(getItemQuantity() - purchasedQuantity);
+    }
+
+    @Override
+    public double calculateTotalWorth() {
+        return getItemPrice() * getItemQuantity() + calculateShippingFee();
+    }
+    
+    @Override
+    public double calculateVolumetricWeight () {
+        // volumetricWeight = (length × width × height) / 5000
+        return (length * width * height) / 5000;
+    }
+    
     public void displayAddedMessage(boolean succ) {
         if (succ) {
             System.out.println("Physical item added successfully!");
         }
-    }
-
-    public double calculateVolumetricWeight () {
-        // volumetricWeight = (length × width × height) / 5000
-        return (length * width * height) / 5000;
     }
 
     public double calculateShippingFee() {

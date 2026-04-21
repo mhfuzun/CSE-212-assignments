@@ -9,11 +9,12 @@ public enum Menu {
     WorthOfInv("Calculate the Total Worth of the Inventory", SubMenu.INVENTORY, 4),
     PriceOfSpec("Increase Price of Specific Type", SubMenu.INVENTORY, 5),
     ListFreeShip("List Items with Shipping Fee Above a Limit", SubMenu.INVENTORY, 6),
+    RemoveOrder("Remove Order for a Specific City", SubMenu.INVENTORY, 7),
     
-    OrderNew("Add an order", SubMenu.CUSTOMER, 7),
-    OrderCost("Calculate order cost", SubMenu.CUSTOMER, 8),
+    OrderNew("Add an order", SubMenu.CUSTOMER, 8),
+    OrderCost("Calculate order cost", SubMenu.CUSTOMER, 9),
     
-    Exit("Exit", SubMenu.CUSTOMER, 9),
+    Exit("Exit", SubMenu.CUSTOMER, 10),
     ;
 
     private final String text;
